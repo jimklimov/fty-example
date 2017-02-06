@@ -27,13 +27,9 @@ extern "C" {
 #endif
 
 //  @interface
-//  Create a new fty_example_server
-FTY_EXAMPLE_EXPORT fty_example_server_t *
-    fty_example_server_new (void);
-
-//  Destroy the fty_example_server
+//  This is the actor constructor as zactor_fn
 FTY_EXAMPLE_EXPORT void
-    fty_example_server_destroy (fty_example_server_t **self_p);
+    fty_example_server (zsock_t *pipe, void* args);
 
 //  Self test of this class
 FTY_EXAMPLE_EXPORT void
