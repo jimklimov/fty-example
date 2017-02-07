@@ -4,8 +4,10 @@
 
 1. Create a repository with new agent anywhere outside the [42ITy
    organization](https://github.com/42Ity)
-2. Follow [Policy on 42ITy community interaction and governance](to be done by @aquette)
-3. As soon as you have the approval, your repository with new agent will be
+2. Follow [42ITy Contributor guide](http://42ity.org/contributing.html)
+3. Create an issue on [FTY repository on GitHub](https://github.com/42ity/FTY)
+   pointing at your repository and providing some information on your new agent
+4. As soon as you have the approval, your repository with new agent will be
    moved under [42ITy organization](https://github.com/42Ity)
 
 ## Creating new agent 
@@ -14,7 +16,7 @@
 
 * Must be buildable by standard
   [autotools](https://en.wikipedia.org/wiki/GNU_Build_System) procedure, .i.e:
-`./autogen.sh && ./configute && ./make`   
+`./autogen.sh && ./configure && ./make`   
 
 * The following `make` targets must work
   * `check` - (unit) tests
@@ -25,12 +27,17 @@
 
 ### Prerequisities
 
-There are some prerequisities that are not mandatory but will make your life so much easier.
-(Note to self: need to collect all Arnaud's links ...; think it would be much
-better to merge various documents that we have...)
+There are some prerequisities that are not mandatory but will make your (and
+our) life so much easier. Most of these are documented in the
+[42ITy Contributor guide](http://42ity.org/contributing.html).
+
+For example, [Documentation Recommendation](http://42ity.org/doc-recommendation.html)
+should be addressed in your new agent.
 
 Most important of this is [zproject](https://github.com/zeromq/zproject), since
 it  will generate everything from Requirements section for you, even packaging.
+In other words, calling `gsl project.xml` must regenerate your project
+successfully.
 
 ## Example agent
 
