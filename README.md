@@ -31,13 +31,8 @@ There are some prerequisities that are not mandatory but will make your (and
 our) life so much easier. Most of these are documented in the
 [42ITy Contributor guide](http://42ity.org/contributing.html).
 
-For example, [Documentation Recommendation](http://42ity.org/doc-recommendation.html)
-should be addressed in your new agent.
-
 Most important of this is [zproject](https://github.com/zeromq/zproject), since
 it  will generate everything from Requirements section for you, even packaging.
-In other words, calling `gsl project.xml` must regenerate your project
-successfully.
 
 ## Example agent
 
