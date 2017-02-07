@@ -14,7 +14,7 @@
 
 * Must be buildable by standard
   [autotools](https://en.wikipedia.org/wiki/GNU_Build_System) procedure, .i.e:
-`./autogen.sh && ./configute && ./make`   
+`./autogen.sh && ./configure && ./make`   
 
 * The following `make` targets must work
   * `check` - (unit) tests
