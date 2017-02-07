@@ -4,8 +4,10 @@
 
 1. Create a repository with new agent anywhere outside the [42ITy
    organization](https://github.com/42Ity)
-2. Follow [Policy on 42ITy community interaction and governance](to be done by @aquette)
-3. As soon as you have the approval, your repository with new agent will be
+2. Follow [42ITy Contributor guide](http://42ity.org/contributing.html)
+3. Create an issue on [FTY repository on GitHub](https://github.com/42ity/FTY)
+   pointing at your repository and providing some information on your new agent
+4. As soon as you have the approval, your repository with new agent will be
    moved under [42ITy organization](https://github.com/42Ity)
 
 ## Creating new agent 
