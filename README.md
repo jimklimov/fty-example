@@ -36,8 +36,6 @@ should be addressed in your new agent.
 
 Most important of this is [zproject](https://github.com/zeromq/zproject), since
 it  will generate everything from Requirements section for you, even packaging.
-In other words, calling `gsl project.xml` must regenerate your project
-successfully.
 
 ## Example agent
 
