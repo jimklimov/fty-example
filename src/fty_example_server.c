@@ -94,12 +94,13 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
     // to FTY_PROTO_STREAM_ALERTS each time asset message is received -> Therefore 
     zmsg_t *reply_message = fty_proto_encode_alert (
             NULL,
+            time,
+            300,
             "example",
             fty_proto_name (protocol_message),
             "status",
             "severity",
             "example of how to publish a message",
-            time,
             "action");
     fty_proto_destroy (&protocol_message);
 
@@ -242,7 +243,7 @@ fty_example_server_test (bool verbose)
     fty_proto_t *alert_message = fty_proto_decode (&message);
     assert (fty_proto_id (alert_message) == FTY_PROTO_ALERT);
     //  Test that the alert published contains element_src equal to name of published asset
-    assert (streq (fty_proto_element_src (alert_message), "new asset 1"));
+    assert (streq (fty_proto_name (alert_message), "new asset 1"));
     fty_proto_destroy (&alert_message);
 
     //  Test MAILBOX deliver:
