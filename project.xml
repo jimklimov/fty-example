@@ -22,7 +22,7 @@
         repository = "https://github.com/42ity/fty-proto"
         test = "fty_proto_test">
         <use project = "malamute"/>
-    </use>    
+    </use>
 
     <class name = "fty_example_server">Actor</class>
     <main name = "fty-example" service = "1">Binary</main>
