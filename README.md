@@ -3,12 +3,18 @@
 ## Procedure
 
 1. Create a repository with new agent anywhere outside the [42ITy
-   organization](https://github.com/42Ity)
+   organization](https://github.com/42Ity).
+   Add the following line to the description to avoid early commits:
+   `PLEASE DO NOT FORK this repository yet as it will get merged into the
+   42ITy organization and may be renamed`
 2. Follow [42ITy Contributor guide](http://42ity.org/contributing.html)
 3. Create an issue on [FTY repository on GitHub](https://github.com/42ity/FTY)
    pointing at your repository and providing some information on your new agent
 4. As soon as you have the approval, your repository with new agent will be
    moved under [42ITy organization](https://github.com/42Ity)
+5. Once your new agent has beeen moved under the
+   [42ITy organization](https://github.com/42Ity), please delete your own
+   repository and fork the one from the [42ITy](https://github.com/42Ity)
 
 ## Creating new agent 
 
