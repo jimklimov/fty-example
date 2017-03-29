@@ -19,14 +19,15 @@
    package names might be in Debian/Ubuntu, and in RHEL/CentOS/OpenSUSE worlds).
 5. As soon as you have the approval, your repository with new agent will be
    moved under [42ITy organization](https://github.com/42ITy).
-6. Once your new agent has beeen moved under the
+6. Once your new agent has been moved to a repository under the
    [42ITy organization](https://github.com/42ITy), please delete your own
    repository and fork the one from the [42ITy](https://github.com/42ITy)
    to continue with your contributions to the ecosystem.
 
 Reminder for 42ITy project maintainers:
-* After cloning the new repository, make sure to rescan Travis CI for 42ITy
-  organization and enable testing of the new component.
+* After cloning the new repository, make sure to rescan Travis CI for the
+  [42ITy organization](https://travis-ci.org/profile/42ity) and enable testing
+  of the newly added component.
 * After cloning the repo, make sure to add the submodule, build recipe entry in
   the `Makefile`, and perhaps additional required Ubuntu packages in `.travis.yml`,
   to 42ITy/FTY build framework.
