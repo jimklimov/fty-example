@@ -53,6 +53,17 @@ s_handle_mailbox (mlm_client_t *client, zmsg_t **message_p)
                     "mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
                     mlm_client_sender (client), "example");
         } 
+    }else{
+        zmsg_t *reply  = zmsg_new ();
+        zmsg_addstr (reply, "ERROR");
+
+        int rv = mlm_client_sendto (client, mlm_client_sender (client), "example", NULL, 1000, &reply);
+        if (rv != 0) {
+            zmsg_destroy (&reply);
+            zsys_error (
+                    "mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
+                    mlm_client_sender (client), "example");
+        }
     }
     zstr_free (&part);
     zmsg_destroy (&message);
@@ -255,6 +266,13 @@ fty_example_server_test (bool verbose)
     zmsg_addstr (message, "WRONG");
     rv = mlm_client_sendto (alerts_consumer, "fty-example", "example", NULL, 1000, &message);
     assert (rv == 0);
+    message = mlm_client_recv (alerts_consumer);
+    assert (message);
+    char *error = zmsg_popstr (message);
+    assert (error!=NULL);
+    assert (streq (error, "ERROR"));
+    zstr_free (&error);
+    zmsg_destroy (&message);
 
     message = zmsg_new ();
     zmsg_addstr (message, "HELLO");
