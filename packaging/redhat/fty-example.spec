@@ -1,5 +1,5 @@
 #
-#    fty-example - Example agent
+#    fty-example - Example agent for 42ITy ecosystem
 #
 #    Copyright (C) 2014 - 2017 Eaton                                        
 #                                                                           
@@ -31,7 +31,7 @@
 Name:           fty-example
 Version:        1.0.0
 Release:        1
-Summary:        example agent
+Summary:        example agent for 42ity ecosystem
 License:        GPL-2.0+
 URL:            https://42ity.org
 Source0:        %{name}-%{version}.tar.gz
@@ -56,14 +56,14 @@ BuildRequires:  fty-proto-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
-fty-example example agent.
+fty-example example agent for 42ity ecosystem.
 
 %package -n libfty_example0
 Group:          System/Libraries
-Summary:        example agent shared library
+Summary:        example agent for 42ity ecosystem shared library
 
 %description -n libfty_example0
-This package contains shared library for fty-example: example agent
+This package contains shared library for fty-example: example agent for 42ity ecosystem
 
 %post -n libfty_example0 -p /sbin/ldconfig
 %postun -n libfty_example0 -p /sbin/ldconfig
@@ -73,7 +73,7 @@ This package contains shared library for fty-example: example agent
 %{_libdir}/libfty_example.so.*
 
 %package devel
-Summary:        example agent
+Summary:        example agent for 42ity ecosystem
 Group:          System/Libraries
 Requires:       libfty_example0 = %{version}
 Requires:       zeromq-devel
@@ -82,8 +82,8 @@ Requires:       malamute-devel
 Requires:       fty-proto-devel
 
 %description devel
-example agent development tools
-This package contains development files for fty-example: example agent
+example agent for 42ity ecosystem development tools
+This package contains development files for fty-example: example agent for 42ity ecosystem
 
 %files devel
 %defattr(-,root,root)

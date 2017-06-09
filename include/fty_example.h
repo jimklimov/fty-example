@@ -1,5 +1,5 @@
 /*  =========================================================================
-    fty-example - Example agent
+    fty-example - Example agent for 42ITy ecosystem
 
     Copyright (C) 2014 - 2017 Eaton                                        
                                                                            
