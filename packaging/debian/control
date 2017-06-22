@@ -1,5 +1,5 @@
 #
-#    fty-example - Example agent
+#    fty-example - Example agent for 42ITy ecosystem
 #
 #    Copyright (C) 2014 - 2017 Eaton                                        
 #                                                                           
@@ -36,8 +36,8 @@ Build-Depends: debhelper (>= 9),
 Package: libfty-example0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: example agent shared library
- This package contains shared library for fty-example: example agent
+Description: example agent for 42ity ecosystem shared library
+ This package contains shared library for fty-example: example agent for 42ity ecosystem
 
 Package: libfty-example-dev
 Architecture: any
@@ -48,14 +48,14 @@ Depends:
     libmlm-dev,
     libfty-proto-dev,
     libfty-example0 (= ${binary:Version})
-Description: example agent development tools
- This package contains development files for fty-example: example agent
+Description: example agent for 42ity ecosystem development tools
+ This package contains development files for fty-example: example agent for 42ity ecosystem
 
 Package: fty-example
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends},
-Description: example agent
- Main package for fty-example: example agent
+Description: example agent for 42ity ecosystem
+ Main package for fty-example: example agent for 42ity ecosystem
 
 Package: fty-example-dbg
 Architecture: any
@@ -64,6 +64,6 @@ Priority: extra
 Depends:
     fty-example (= ${binary:Version}),
     ${misc:Depends}
-Description: example agent debugging symbols
- This package contains the debugging symbols for fty-example : example agent.
+Description: example agent for 42ity ecosystem debugging symbols
+ This package contains the debugging symbols for fty-example : example agent for 42ity ecosystem.
 
