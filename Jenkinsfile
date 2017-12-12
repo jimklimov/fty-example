@@ -1,4 +1,6 @@
 /*
+    Note: Generated file was amended to not try to deploy build results.
+
     fty-example - Example agent for 42ITy ecosystem
 
     Copyright (C) 2014 - 2017 Eaton
@@ -31,7 +33,8 @@ pipeline {
         // or a config file uploaded to master for all jobs or this job, see
         // https://jenkins.io/doc/pipeline/examples/#configfile-provider-plugin
         string (
-            defaultValue: '${DEFAULT_DEPLOY_BRANCH_PATTERN}',
+//            defaultValue: '${DEFAULT_DEPLOY_BRANCH_PATTERN}',
+            defaultValue: '',
             description: 'Regular expression of branch names for which a deploy action would be attempted after a successful build and test; leave empty to not deploy. Reasonable value is ^(master|release/.*|feature/*)$',
             name : 'DEPLOY_BRANCH_PATTERN')
         string (
