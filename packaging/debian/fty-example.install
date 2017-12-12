@@ -1,5 +1,4 @@
 usr/bin/fty-example
-usr/share/man/man1/fty-example.1
 etc/fty-example/fty-example.cfg
 lib/systemd/system/fty-example.service
 

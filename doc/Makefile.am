@@ -73,7 +73,7 @@ fty-example.txt: $(top_srcdir)/src/fty_example.c
 	"$(srcdir)/mkman" "fty_example" "$(builddir)/fty-example.txt" "$(srcdir)/.."
 
 
-clean:
+clean-local:
 	rm -f *.1 *.3 *.7 $(GENERATED_DOCS)
 
 doc: $(GENERATED_DOCS)
