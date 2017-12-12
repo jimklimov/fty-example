@@ -103,6 +103,8 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
     uint64_t time = zclock_mono () / 1000;
     // We would like to demonstrate how to publish messages by sending an 'alert'
     // to FTY_PROTO_STREAM_ALERTS each time asset message is received -> Therefore 
+    zlist_t *actions = zlist_new ();
+    zlist_append (actions, "action");
     zmsg_t *reply_message = fty_proto_encode_alert (
             NULL,
             time,
@@ -112,7 +114,7 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
             "status",
             "severity",
             "example of how to publish a message",
-            "action");
+            actions);
     fty_proto_destroy (&protocol_message);
 
     int rv = mlm_client_send (client, "example", &reply_message);
@@ -121,6 +123,7 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
         zsys_error ("mlm_client_send (subject = '%s') failed");
         return;
     }
+    zlist_destroy (&actions);
 }
 
 //  --------------------------------------------------------------------------
