@@ -1,29 +1,30 @@
 #
 #    fty-example - Example agent for 42ITy ecosystem
 #
-#    Copyright (C) 2014 - 2017 Eaton                                        
-#                                                                           
-#    This program is free software; you can redistribute it and/or modify   
-#    it under the terms of the GNU General Public License as published by   
-#    the Free Software Foundation; either version 2 of the License, or      
-#    (at your option) any later version.                                    
-#                                                                           
-#    This program is distributed in the hope that it will be useful,        
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of         
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          
-#    GNU General Public License for more details.                           
-#                                                                           
+#    Copyright (C) 2014 - 2017 Eaton
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
-#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.            
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 Source:         fty-example
 Section:        net
 Priority:       optional
 Maintainer:     fty-example Developers <eatonipcopensource@eaton.com>
-Standards-Version: 3.9.7
+Standards-Version: 4.0.1.0
 Build-Depends: debhelper (>= 9),
     pkg-config,
+    libsodium-dev,
     libzmq3-dev,
     libczmq-dev,
     libmlm-dev,
@@ -36,34 +37,39 @@ Build-Depends: debhelper (>= 9),
 Package: libfty-example0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: example agent for 42ity ecosystem shared library
- This package contains shared library for fty-example: example agent for 42ity ecosystem
+Description: fty-example shared library
+ This package contains shared library for fty-example:
+ example agent for 42ity ecosystem
 
 Package: libfty-example-dev
 Architecture: any
 Section: libdevel
 Depends:
+    ${misc:Depends},
+    libsodium-dev,
     libzmq3-dev,
     libczmq-dev,
     libmlm-dev,
     libfty-proto-dev,
     libfty-example0 (= ${binary:Version})
-Description: example agent for 42ity ecosystem development tools
- This package contains development files for fty-example: example agent for 42ity ecosystem
+Description: fty-example development tools
+ This package contains development files for fty-example:
+ example agent for 42ity ecosystem
 
 Package: fty-example
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends},
-Description: example agent for 42ity ecosystem
- Main package for fty-example: example agent for 42ity ecosystem
+Description: runnable binaries from fty-example
+ Main package for fty-example:
+ example agent for 42ity ecosystem
 
 Package: fty-example-dbg
 Architecture: any
 Section: debug
-Priority: extra
+Priority: optional
 Depends:
     fty-example (= ${binary:Version}),
     ${misc:Depends}
-Description: example agent for 42ity ecosystem debugging symbols
- This package contains the debugging symbols for fty-example : example agent for 42ity ecosystem.
-
+Description: fty-example debugging symbols
+ This package contains the debugging symbols for fty-example:
+ example agent for 42ity ecosystem.
