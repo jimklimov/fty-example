@@ -8,4 +8,4 @@ server
     workdir = .         #   Working directory for daemon
     verbose = 0         #   Do verbose logging of activity?
 log
-    config = "/etc/fty-example/fty-example-log.conf" #Path to the log configuration file
+    config = "src/selftest-ro/fty-example-log.conf" #Path to the log configuration file
