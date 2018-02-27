@@ -18,10 +18,11 @@ AM_CPPFLAGS = \
     ${czmq_CFLAGS} \
     ${malamute_CFLAGS} \
     ${fty_proto_CFLAGS} \
+    ${log4cplus_CFLAGS} \
     ${fty_common_CFLAGS} \
     -I$(srcdir)/include
 
-project_libs = ${libsodium_LIBS} ${libzmq_LIBS} ${czmq_LIBS} ${malamute_LIBS} ${fty_proto_LIBS} ${fty_common_LIBS}
+project_libs = ${libsodium_LIBS} ${libzmq_LIBS} ${czmq_LIBS} ${malamute_LIBS} ${fty_proto_LIBS} ${log4cplus_LIBS} ${fty_common_LIBS}
 
 SUBDIRS = doc
 SUBDIRS += include
@@ -47,6 +48,7 @@ EXTRA_DIST += \
     Findczmq.cmake \
     Findmalamute.cmake \
     Findfty_proto.cmake \
+    Findlog4cplus.cmake \
     Findfty_common.cmake \
     CMakeLists.txt
 endif

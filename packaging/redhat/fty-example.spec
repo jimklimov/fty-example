@@ -55,6 +55,7 @@ BuildRequires:  zeromq-devel
 BuildRequires:  czmq-devel
 BuildRequires:  malamute-devel
 BuildRequires:  fty-proto-devel
+BuildRequires:  log4cplus-devel
 BuildRequires:  fty-common-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -84,6 +85,7 @@ Requires:       zeromq-devel
 Requires:       czmq-devel
 Requires:       malamute-devel
 Requires:       fty-proto-devel
+Requires:       log4cplus-devel
 Requires:       fty-common-devel
 
 %description devel
