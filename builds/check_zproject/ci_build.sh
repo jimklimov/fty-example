@@ -12,6 +12,7 @@ git clone --quiet --depth 1 -b 4.2.0-FTY-master https://github.com/42ity/libzmq.
 git clone --quiet --depth 1 -b v3.0.2-FTY-master https://github.com/42ity/czmq.git czmq
 git clone --quiet --depth 1 -b 1.0-FTY-master https://github.com/42ity/malamute.git malamute
 git clone --quiet --depth 1 https://github.com/42ity/fty-proto.git fty-proto
+git clone --quiet --depth 1 https://github.com/42ity/fty-common.git fty-common
 cd -
 
 if ! ((command -v dpkg-query >/dev/null 2>&1 && dpkg-query --list zproject >/dev/null 2>&1) || \
