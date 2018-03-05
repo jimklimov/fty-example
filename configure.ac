@@ -669,6 +669,311 @@ dnl END of PKG_CHECK_MODULES and/or direct tests for log4cplus
 dnl END of enabled attempts to search for log4cplus
 
 
+was_cxxtools_check_lib_detected=no
+
+search_cxxtools="yes"
+
+AC_ARG_WITH([cxxtools],
+    [
+        AS_HELP_STRING([--with-cxxtools],
+        [yes or no. Optionally specify cxxtools prefix (directory where its include/ and lib/ are located), but that is only used if pkgconfig metadata is not found first])
+    ],
+    [
+        search_cxxtools="yes"
+    ],
+    [
+        search_cxxtools="yes"
+    ])
+AS_CASE([x"${with_cxxtools}"],
+    [xyes], [search_cxxtools="yes"],
+    [xno],  [search_cxxtools="no"])
+
+dnl We do not abort right now, because the maintainer/developer may have
+dnl something particular in mind, e.g. to build just parts of a project.
+AS_IF([test x"${search_cxxtools}" = xno],
+    [AC_MSG_WARN([Required dependency on cxxtools was explicitly disabled during configuration by '--with-cxxtools=no'; subsequent full build of fty-example may fail])])
+
+AS_IF([test x"${search_cxxtools}" = xyes], [
+    # Archive previously detected and supplied flags
+    PRE_SEARCH_CFLAGS="${CFLAGS}"
+    PRE_SEARCH_LIBS="${LIBS}"
+
+    found_pkgconfig=""
+    found_linkname=""
+    PKG_CHECK_MODULES([cxxtools], [cxxtools >= 0.0.0],
+    [
+        PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE $cxxtools_LIBS"
+        was_cxxtools_check_lib_detected=pkgcfg
+        found_pkgconfig="cxxtools"
+    ],
+    [
+        AC_MSG_NOTICE([Package cxxtools not found; falling back to defined compilability tests])
+
+        cxxtools_synthetic_cflags=""
+        cxxtools_synthetic_libs="-lcxxtools"
+
+        if test -n "${with_cxxtools}" && test x"${with_cxxtools}" != xyes && test x"${with_cxxtools}" != xno; then
+            if test -r "${with_cxxtools}/include/cxxtools/allocator.h"; then
+                cxxtools_synthetic_cflags="-I${with_cxxtools}/include"
+                cxxtools_synthetic_libs="-L${with_cxxtools}/lib -lcxxtools"
+            else
+            AC_MSG_ERROR([Header file ${with_cxxtools}/include/cxxtools/allocator.h was not found. Please check cxxtools prefix])
+            fi
+        else
+            AC_CHECK_HEADER([cxxtools/allocator.h], [],
+            AC_MSG_ERROR([Header file cxxtools/allocator.h was not found in default search paths])
+                )
+        fi
+
+        AC_CHECK_LIB([cxxtools], [cxxtools::Utf8Codec::Utf8Codec],
+            [
+                was_cxxtools_check_lib_detected=yes
+                PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE -lcxxtools"
+                found_linkname="cxxtools"
+            ],
+            [AC_MSG_ERROR([cannot link with -lcxxtools, install cxxtools])])
+    ])
+
+dnl END of PKG_CHECK_MODULES and/or direct tests for cxxtools
+    AS_CASE(["x${was_cxxtools_check_lib_detected}"],
+        [xpkgcfg], [
+                AC_SUBST([pkgconfig_name_cxxtools],[${found_pkgconfig}])
+                CFLAGS="${cxxtools_CFLAGS} ${CFLAGS}"
+                LIBS="${cxxtools_LIBS} ${LIBS}"
+            ],
+        [xyes], [
+                AC_SUBST([pkgconfig_name_cxxtools],[${found_linkname}])
+                CFLAGS="${cxxtools_synthetic_cflags} ${CFLAGS}"
+                LDFLAGS="${cxxtools_synthetic_libs} ${LDFLAGS}"
+                LIBS="${cxxtools_synthetic_libs} ${LIBS}"
+
+                AC_SUBST([cxxtools_CFLAGS],[${cxxtools_synthetic_cflags}])
+                AC_SUBST([cxxtools_LIBS],[${cxxtools_synthetic_libs}])
+            ],
+        [xno], [
+                AC_SUBST([pkgconfig_name_cxxtools],[cxxtools])
+            AC_MSG_ERROR([Cannot find pkg-config metadata for cxxtools 0.0.0 or higher])
+    ])
+])
+dnl END of enabled attempts to search for cxxtools
+
+
+was_libtntnet_check_lib_detected=no
+
+search_libtntnet="no"
+
+AC_ARG_WITH([libtntnet],
+    [
+        AS_HELP_STRING([--with-libtntnet],
+        [yes or no. Optionally specify libtntnet prefix (directory where its include/ and lib/ are located), but that is only used if pkgconfig metadata is not found first])
+    ],
+    [
+        search_libtntnet="yes"
+    ],
+    [
+        search_libtntnet="yes"
+    ])
+AS_CASE([x"${with_libtntnet}"],
+    [xyes], [search_libtntnet="yes"],
+    [xno],  [search_libtntnet="no"])
+
+
+AS_IF([test x"${search_libtntnet}" = xyes], [
+    # Archive previously detected and supplied flags
+    PRE_SEARCH_CFLAGS="${CFLAGS}"
+    PRE_SEARCH_LIBS="${LIBS}"
+
+    found_pkgconfig=""
+    found_linkname=""
+    PKG_CHECK_MODULES([libtntnet], [libtntnet >= 0.0.0],
+    [
+        AC_DEFINE(HAVE_LIBTNTNET, 1, [The optional libtntnet library is to be used])
+        PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE $libtntnet_LIBS"
+        was_libtntnet_check_lib_detected=pkgcfg
+        found_pkgconfig="libtntnet"
+    ],
+    [
+        AC_MSG_WARN([Attribute 'test' is not set on zproject dependency 'libtntnet' - please ensure it is set])
+    ])
+
+dnl END of PKG_CHECK_MODULES and/or direct tests for libtntnet
+    AS_CASE(["x${was_libtntnet_check_lib_detected}"],
+        [xpkgcfg], [
+                AC_SUBST([pkgconfig_name_libtntnet],[${found_pkgconfig}])
+                CFLAGS="${libtntnet_CFLAGS} ${CFLAGS}"
+                LIBS="${libtntnet_LIBS} ${LIBS}"
+            ],
+        [xyes], [
+                AC_SUBST([pkgconfig_name_libtntnet],[${found_linkname}])
+                CFLAGS="${libtntnet_synthetic_cflags} ${CFLAGS}"
+                LDFLAGS="${libtntnet_synthetic_libs} ${LDFLAGS}"
+                LIBS="${libtntnet_synthetic_libs} ${LIBS}"
+
+                AC_SUBST([libtntnet_CFLAGS],[${libtntnet_synthetic_cflags}])
+                AC_SUBST([libtntnet_LIBS],[${libtntnet_synthetic_libs}])
+            ],
+        [xno], [
+                AC_SUBST([pkgconfig_name_libtntnet],[libtntnet])
+            AC_MSG_WARN([Cannot find pkg-config metadata for libtntnet 0.0.0 or higher])
+    ])
+])
+dnl END of enabled attempts to search for libtntnet
+
+
+was_tntdb_check_lib_detected=no
+
+search_tntdb="yes"
+
+AC_ARG_WITH([tntdb],
+    [
+        AS_HELP_STRING([--with-tntdb],
+        [yes or no. Optionally specify tntdb prefix (directory where its include/ and lib/ are located), but that is only used if pkgconfig metadata is not found first])
+    ],
+    [
+        search_tntdb="yes"
+    ],
+    [
+        search_tntdb="yes"
+    ])
+AS_CASE([x"${with_tntdb}"],
+    [xyes], [search_tntdb="yes"],
+    [xno],  [search_tntdb="no"])
+
+dnl We do not abort right now, because the maintainer/developer may have
+dnl something particular in mind, e.g. to build just parts of a project.
+AS_IF([test x"${search_tntdb}" = xno],
+    [AC_MSG_WARN([Required dependency on tntdb was explicitly disabled during configuration by '--with-tntdb=no'; subsequent full build of fty-example may fail])])
+
+AS_IF([test x"${search_tntdb}" = xyes], [
+    # Archive previously detected and supplied flags
+    PRE_SEARCH_CFLAGS="${CFLAGS}"
+    PRE_SEARCH_LIBS="${LIBS}"
+
+    found_pkgconfig=""
+    found_linkname=""
+    PKG_CHECK_MODULES([tntdb], [tntdb >= 0.0.0],
+    [
+        PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE $tntdb_LIBS"
+        was_tntdb_check_lib_detected=pkgcfg
+        found_pkgconfig="tntdb"
+    ],
+    [
+        AC_MSG_NOTICE([Package tntdb not found; falling back to defined compilability tests])
+
+        tntdb_synthetic_cflags=""
+        tntdb_synthetic_libs="-ltntdb"
+
+        if test -n "${with_tntdb}" && test x"${with_tntdb}" != xyes && test x"${with_tntdb}" != xno; then
+            if test -r "${with_tntdb}/include/tntdb.h"; then
+                tntdb_synthetic_cflags="-I${with_tntdb}/include"
+                tntdb_synthetic_libs="-L${with_tntdb}/lib -ltntdb"
+            else
+            AC_MSG_ERROR([Header file ${with_tntdb}/include/tntdb.h was not found. Please check tntdb prefix])
+            fi
+        else
+            AC_CHECK_HEADER([tntdb.h], [],
+            AC_MSG_ERROR([Header file tntdb.h was not found in default search paths])
+                )
+        fi
+
+        AC_CHECK_LIB([tntdb], [tntdb::Date::gmtime],
+            [
+                was_tntdb_check_lib_detected=yes
+                PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE -ltntdb"
+                found_linkname="tntdb"
+            ],
+            [AC_MSG_ERROR([cannot link with -ltntdb, install tntdb])])
+    ])
+
+dnl END of PKG_CHECK_MODULES and/or direct tests for tntdb
+    AS_CASE(["x${was_tntdb_check_lib_detected}"],
+        [xpkgcfg], [
+                AC_SUBST([pkgconfig_name_tntdb],[${found_pkgconfig}])
+                CFLAGS="${tntdb_CFLAGS} ${CFLAGS}"
+                LIBS="${tntdb_LIBS} ${LIBS}"
+            ],
+        [xyes], [
+                AC_SUBST([pkgconfig_name_tntdb],[${found_linkname}])
+                CFLAGS="${tntdb_synthetic_cflags} ${CFLAGS}"
+                LDFLAGS="${tntdb_synthetic_libs} ${LDFLAGS}"
+                LIBS="${tntdb_synthetic_libs} ${LIBS}"
+
+                AC_SUBST([tntdb_CFLAGS],[${tntdb_synthetic_cflags}])
+                AC_SUBST([tntdb_LIBS],[${tntdb_synthetic_libs}])
+            ],
+        [xno], [
+                AC_SUBST([pkgconfig_name_tntdb],[tntdb])
+            AC_MSG_ERROR([Cannot find pkg-config metadata for tntdb 0.0.0 or higher])
+    ])
+])
+dnl END of enabled attempts to search for tntdb
+
+
+was_libsasl2_check_lib_detected=no
+
+search_libsasl2="yes"
+
+AC_ARG_WITH([libsasl2],
+    [
+        AS_HELP_STRING([--with-libsasl2],
+        [yes or no. Optionally specify libsasl2 prefix (directory where its include/ and lib/ are located), but that is only used if pkgconfig metadata is not found first])
+    ],
+    [
+        search_libsasl2="yes"
+    ],
+    [
+        search_libsasl2="yes"
+    ])
+AS_CASE([x"${with_libsasl2}"],
+    [xyes], [search_libsasl2="yes"],
+    [xno],  [search_libsasl2="no"])
+
+dnl We do not abort right now, because the maintainer/developer may have
+dnl something particular in mind, e.g. to build just parts of a project.
+AS_IF([test x"${search_libsasl2}" = xno],
+    [AC_MSG_WARN([Required dependency on libsasl2 was explicitly disabled during configuration by '--with-libsasl2=no'; subsequent full build of fty-example may fail])])
+
+AS_IF([test x"${search_libsasl2}" = xyes], [
+    # Archive previously detected and supplied flags
+    PRE_SEARCH_CFLAGS="${CFLAGS}"
+    PRE_SEARCH_LIBS="${LIBS}"
+
+    found_pkgconfig=""
+    found_linkname=""
+    PKG_CHECK_MODULES([libsasl2], [libsasl2 >= 0.0.0],
+    [
+        PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE $libsasl2_LIBS"
+        was_libsasl2_check_lib_detected=pkgcfg
+        found_pkgconfig="libsasl2"
+    ],
+    [
+        AC_MSG_WARN([Attribute 'test' is not set on zproject dependency 'libsasl2' - please ensure it is set])
+    ])
+
+dnl END of PKG_CHECK_MODULES and/or direct tests for libsasl2
+    AS_CASE(["x${was_libsasl2_check_lib_detected}"],
+        [xpkgcfg], [
+                AC_SUBST([pkgconfig_name_libsasl2],[${found_pkgconfig}])
+                CFLAGS="${libsasl2_CFLAGS} ${CFLAGS}"
+                LIBS="${libsasl2_LIBS} ${LIBS}"
+            ],
+        [xyes], [
+                AC_SUBST([pkgconfig_name_libsasl2],[${found_linkname}])
+                CFLAGS="${libsasl2_synthetic_cflags} ${CFLAGS}"
+                LDFLAGS="${libsasl2_synthetic_libs} ${LDFLAGS}"
+                LIBS="${libsasl2_synthetic_libs} ${LIBS}"
+
+                AC_SUBST([libsasl2_CFLAGS],[${libsasl2_synthetic_cflags}])
+                AC_SUBST([libsasl2_LIBS],[${libsasl2_synthetic_libs}])
+            ],
+        [xno], [
+                AC_SUBST([pkgconfig_name_libsasl2],[libsasl2])
+            AC_MSG_ERROR([Cannot find pkg-config metadata for libsasl2 0.0.0 or higher])
+    ])
+])
+dnl END of enabled attempts to search for libsasl2
+
+
 was_fty_common_check_lib_detected=no
 
 search_libfty_common="yes"

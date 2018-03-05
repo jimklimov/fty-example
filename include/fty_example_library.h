@@ -91,9 +91,18 @@ typedef struct _fty_example_server_t fty_example_server_t;
 #endif // FTY_EXAMPLE_BUILD_DRAFT_API
 
 #ifdef FTY_EXAMPLE_BUILD_DRAFT_API
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //  Self test for private classes
 FTY_EXAMPLE_EXPORT void
-    fty_example_private_selftest (bool verbose);
+    fty_example_private_selftest (bool verbose, const char *subtest);
+
+#ifdef __cplusplus
+}
+#endif
 #endif // FTY_EXAMPLE_BUILD_DRAFT_API
 
 #endif

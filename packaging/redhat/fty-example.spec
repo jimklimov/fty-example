@@ -56,6 +56,10 @@ BuildRequires:  czmq-devel
 BuildRequires:  malamute-devel
 BuildRequires:  fty-proto-devel
 BuildRequires:  log4cplus-devel
+BuildRequires:  cxxtools-devel
+BuildRequires:  libtntnet-devel
+BuildRequires:  tntdb-devel
+BuildRequires:  cyrus-sasl-devel
 BuildRequires:  fty-common-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -86,6 +90,10 @@ Requires:       czmq-devel
 Requires:       malamute-devel
 Requires:       fty-proto-devel
 Requires:       log4cplus-devel
+Requires:       cxxtools-devel
+Requires:       libtntnet-devel
+Requires:       tntdb-devel
+Requires:       cyrus-sasl-devel
 Requires:       fty-common-devel
 
 %description devel
@@ -106,7 +114,7 @@ This package contains development files for fty-example: example agent for 42ity
 
 %build
 sh autogen.sh
-%{configure} --enable-drafts=%{DRAFTS} --with-systemd-units
+%{configure} --enable-drafts=%{DRAFTS} --with-systemd-units --with-libtntnet=yes
 make %{_smp_mflags}
 
 %install

@@ -33,7 +33,7 @@ int main (int argc, char *argv [])
     const char * CONFIGFILE = "";
     const char * LOGCONFIGFILE = "";
     
-    ftylog = ftylog_new("fty-example","");
+    ftylog_setInstance("fty-example","");
     bool verbose = false;
     int argn;
     for (argn = 1; argn < argc; argn++) {
@@ -56,7 +56,7 @@ int main (int argc, char *argv [])
             ++argn;
         }
         else {
-            log_error (ftylog,"Unknown option: %s\n", argv [argn]);
+            log_error ("Unknown option: %s\n", argv [argn]);
             return 1;
         }
     }
@@ -69,15 +69,15 @@ int main (int argc, char *argv [])
     }
         
     if (!streq(LOGCONFIGFILE,"")) {
-        ftylog_setConfigFile(ftylog,LOGCONFIGFILE);
+        ftylog_setConfigFile(ftylog_getInstance(),LOGCONFIGFILE);
     }
     
     if (verbose)
     {
-        ftylog_setVeboseMode(ftylog);
-        log_trace (ftylog,"Verbose mode OK");
+        ftylog_setVeboseMode(ftylog_getInstance());
+        log_trace ("Verbose mode OK");
     }
-    log_info (ftylog,"fty-example starting");
+    log_info ("fty-example starting");
     const char *endpoint = "ipc://@/malamute";
     zactor_t *example_server = zactor_new (fty_example_server, (void *) endpoint);
 
@@ -90,11 +90,10 @@ int main (int argc, char *argv [])
             free (message);
         }
         else {
-            log_info (ftylog,"interrupted");
+            log_info ("interrupted");
             break;
         }
     }
     zactor_destroy (&example_server);
-    ftylog_delete(ftylog);
     return EXIT_SUCCESS;
 }

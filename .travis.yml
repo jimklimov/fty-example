@@ -117,6 +117,9 @@ before_install:
 - sudo apt-get remove liblog4cplus-dev
 - sudo apt-get autoremove
 
+before_script:
+- ./.travis.fixsasl
+
 # Hand off to generated script for each BUILD_TYPE
 script: ./ci_build.sh
 before_deploy: . ./ci_deploy.sh && ./ci_deploy_obs.sh

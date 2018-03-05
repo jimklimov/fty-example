@@ -26,7 +26,5 @@
 #include "fty_example_library.h"
 
 //  Add your own public definitions here, if you need them
-//Logging object
-Ftylog * ftylog;
 
 #endif

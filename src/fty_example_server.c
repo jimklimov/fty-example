@@ -49,8 +49,7 @@ s_handle_mailbox (mlm_client_t *client, zmsg_t **message_p)
         int rv = mlm_client_sendto (client, mlm_client_sender (client), "example", NULL, 1000, &reply);
         if (rv != 0) {
             zmsg_destroy (&reply);
-            log_error (ftylog,
-                    "mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
+            log_error ("mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
                     mlm_client_sender (client), "example");
         } 
     }else{
@@ -60,8 +59,7 @@ s_handle_mailbox (mlm_client_t *client, zmsg_t **message_p)
         int rv = mlm_client_sendto (client, mlm_client_sender (client), "example", NULL, 1000, &reply);
         if (rv != 0) {
             zmsg_destroy (&reply);
-            log_error (ftylog,
-                    "mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
+            log_error ("mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
                     mlm_client_sender (client), "example");
         }
     }
@@ -80,21 +78,20 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
     zmsg_t *message = *message_p;
     // On malamute streams we should receive only fty_proto protocol messages
     if (!is_fty_proto (message)) {
-        log_error (ftylog,"Received message is not fty_proto protocol message.");
+        log_error ("Received message is not fty_proto protocol message.");
         zmsg_destroy (message_p);
         return;
     }
 
     fty_proto_t *protocol_message = fty_proto_decode (&message);
     if (protocol_message == NULL) {
-        log_error (ftylog,"fty_proto_decode () failed. Received message could not be parsed.");
+        log_error ("fty_proto_decode () failed. Received message could not be parsed.");
         return;
     }
     // Since we are subscribed to FTY_PROTO_STREAM_ASSETS,
     // received message should be FTY_PROTO_ASSET message 
     if (fty_proto_id (protocol_message) != FTY_PROTO_ASSET) {
-        log_error (ftylog,
-                "Received message is not expected FTY_PROTO_ASSET id, but: '%d'.",
+        log_error ("Received message is not expected FTY_PROTO_ASSET id, but: '%d'.",
                 fty_proto_id (protocol_message));
         fty_proto_destroy (&protocol_message);
         return;
@@ -120,7 +117,7 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
     int rv = mlm_client_send (client, "example", &reply_message);
     if (rv != 0) {
         zmsg_destroy (&reply_message);
-        log_error (ftylog,"mlm_client_send (subject = '%s') failed");
+        log_error ("mlm_client_send (subject = '%s') failed");
         return;
     }
     zlist_destroy (&actions);
@@ -133,21 +130,19 @@ void
 fty_example_server (zsock_t *pipe, void* args)
 {
     //log object must be initialized
-    assert(ftylog);
     const char *endpoint = (const char *) args;
-    log_debug (ftylog,"endpoint: %s", endpoint);
+    log_debug ("endpoint: %s", endpoint);
 
     mlm_client_t *client = mlm_client_new ();
     if (client == NULL) {
-        log_error (ftylog,"mlm_client_new () failed.");
+        log_error ("mlm_client_new () failed.");
         return;
     }
 
     int rv = mlm_client_connect (client, endpoint, 1000, "fty-example");
     if (rv == -1) {
         mlm_client_destroy (&client);
-        log_error (ftylog,
-                "mlm_client_connect (endpoint = '%s', timeout = '%d', address = '%s') failed.",
+        log_error ("mlm_client_connect (endpoint = '%s', timeout = '%d', address = '%s') failed.",
                 endpoint, 1000, "fty-example");
         return;
     } 
@@ -155,8 +150,7 @@ fty_example_server (zsock_t *pipe, void* args)
     rv = mlm_client_set_consumer (client, FTY_PROTO_STREAM_ASSETS, ".*");
     if (rv == -1) {
         mlm_client_destroy (&client);
-        log_error (ftylog,
-                "mlm_client_set_consumer (stream = '%s', pattern = '%s') failed.",
+        log_error ("mlm_client_set_consumer (stream = '%s', pattern = '%s') failed.",
                 FTY_PROTO_STREAM_ASSETS, ".*");
         return;
     }
@@ -164,13 +158,13 @@ fty_example_server (zsock_t *pipe, void* args)
     rv = mlm_client_set_producer (client, FTY_PROTO_STREAM_ALERTS);
     if (rv == -1) {
         mlm_client_destroy (&client);
-        log_error (ftylog,"mlm_client_set_consumer (stream = '%s') failed.", FTY_PROTO_STREAM_ALERTS);
+        log_error ("mlm_client_set_consumer (stream = '%s') failed.", FTY_PROTO_STREAM_ALERTS);
         return;
     } 
 
     zpoller_t *poller = zpoller_new (pipe, mlm_client_msgpipe (client), NULL);
     zsock_signal (pipe, 0);
-    log_debug (ftylog,"actor ready");
+    log_debug ("actor ready");
 
     while (!zsys_interrupted) {
 
@@ -191,7 +185,7 @@ fty_example_server (zsock_t *pipe, void* args)
 
         zmsg_t *message = mlm_client_recv (client);
         if (message == NULL) {
-            log_debug (ftylog,"interrupted");
+            log_debug ("interrupted");
             break;
         }
         if (streq (mlm_client_command (client), "MAILBOX DELIVER")) {
@@ -202,8 +196,7 @@ fty_example_server (zsock_t *pipe, void* args)
             s_handle_stream (client, &message);
         }
         else {
-            log_warning (ftylog,
-                    "Unknown malamute pattern: '%s'. Message subject: '%s', sender: '%s'.",
+            log_warning ("Unknown malamute pattern: '%s'. Message subject: '%s', sender: '%s'.",
                     mlm_client_command (client), mlm_client_subject (client), mlm_client_sender (client));
             zmsg_destroy (&message);
         }
@@ -220,7 +213,7 @@ void
 fty_example_server_test (bool verbose)
 {
 
-    ftylog = ftylog_new("fty-example","./src/selftest-ro/fty-example-log.conf");
+    ftylog_setInstance("fty-example","./src/selftest-ro/fty-example-log.conf");
 
     //  @selftest
     static const char* endpoint = "inproc://fty-example-server-test";      
@@ -245,12 +238,12 @@ fty_example_server_test (bool verbose)
     zstr_sendx (server, "BIND", endpoint, NULL);
     if (verbose)
     {
-        ftylog_setVeboseMode(ftylog);
+        ftylog_setVeboseMode(ftylog_getInstance());
         zstr_send (server, "VERBOSE");
     }
     printf (" * fty_example_server: ");
     zactor_t *example_server = zactor_new (fty_example_server, (void *) endpoint);
-    log_info(ftylog,"After launch fty_example_server");
+    log_info("After launch fty_example_server");
     //  Producer on FTY_PROTO_STREAM_ASSETS stream
     mlm_client_t *assets_producer = mlm_client_new ();
     int rv = mlm_client_connect (assets_producer, endpoint, 1000, "assets_producer");
@@ -312,7 +305,6 @@ fty_example_server_test (bool verbose)
     mlm_client_destroy (&alerts_consumer);
     zactor_destroy (&example_server);
     zactor_destroy (&server);
-    ftylog_delete(ftylog);
     //  @end
     printf ("OK\n");
 }

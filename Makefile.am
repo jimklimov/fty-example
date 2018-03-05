@@ -19,10 +19,14 @@ AM_CPPFLAGS = \
     ${malamute_CFLAGS} \
     ${fty_proto_CFLAGS} \
     ${log4cplus_CFLAGS} \
+    ${cxxtools_CFLAGS} \
+    ${libtntnet_CFLAGS} \
+    ${tntdb_CFLAGS} \
+    ${libsasl2_CFLAGS} \
     ${fty_common_CFLAGS} \
     -I$(srcdir)/include
 
-project_libs = ${libsodium_LIBS} ${libzmq_LIBS} ${czmq_LIBS} ${malamute_LIBS} ${fty_proto_LIBS} ${log4cplus_LIBS} ${fty_common_LIBS}
+project_libs = ${libsodium_LIBS} ${libzmq_LIBS} ${czmq_LIBS} ${malamute_LIBS} ${fty_proto_LIBS} ${log4cplus_LIBS} ${cxxtools_LIBS} ${libtntnet_LIBS} ${tntdb_LIBS} ${libsasl2_LIBS} ${fty_common_LIBS}
 
 SUBDIRS = doc
 SUBDIRS += include
@@ -49,6 +53,10 @@ EXTRA_DIST += \
     Findmalamute.cmake \
     Findfty_proto.cmake \
     Findlog4cplus.cmake \
+    Findcxxtools.cmake \
+    Findlibtntnet.cmake \
+    Findtntdb.cmake \
+    Findlibsasl2.cmake \
     Findfty_common.cmake \
     CMakeLists.txt
 endif
