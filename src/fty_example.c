@@ -30,12 +30,17 @@
 
 int main (int argc, char *argv [])
 {
+    const char * CONFIGFILE = "";
+    const char * LOGCONFIGFILE = "";
+    
+    ftylog_setInstance("fty-example","");
     bool verbose = false;
     int argn;
     for (argn = 1; argn < argc; argn++) {
         if (streq (argv [argn], "--help")
         ||  streq (argv [argn], "-h")) {
             puts ("fty-example [options] ...");
+            puts ("  --config / -c          configuration file");
             puts ("  --verbose / -v         verbose test output");
             puts ("  --help / -h            this information");
             return 0;
@@ -44,16 +49,35 @@ int main (int argc, char *argv [])
         if (streq (argv [argn], "--verbose")
         ||  streq (argv [argn], "-v"))
             verbose = true;
+        else
+        if (streq (argv [argn], "--config")
+        ||  streq (argv [argn], "-c")) {
+            CONFIGFILE = argv [argn + 1];
+            ++argn;
+        }
         else {
-            printf ("Unknown option: %s\n", argv [argn]);
+            log_error ("Unknown option: %s\n", argv [argn]);
             return 1;
         }
     }
     //  Insert main code here
+    if (!streq(CONFIGFILE,"")) {
+        zconfig_t *cfg = zconfig_load(CONFIGFILE);
+        if (cfg) {
+            LOGCONFIGFILE = zconfig_get(cfg, "log/config", "");
+        }
+    }
+        
+    if (!streq(LOGCONFIGFILE,"")) {
+        ftylog_setConfigFile(ftylog_getInstance(),LOGCONFIGFILE);
+    }
+    
     if (verbose)
-        zsys_info ("fty_example - Binary");
-
-    zsys_info ("fty-example starting");
+    {
+        ftylog_setVeboseMode(ftylog_getInstance());
+        log_trace ("Verbose mode OK");
+    }
+    log_info ("fty-example starting");
     const char *endpoint = "ipc://@/malamute";
     zactor_t *example_server = zactor_new (fty_example_server, (void *) endpoint);
 
@@ -66,7 +90,7 @@ int main (int argc, char *argv [])
             free (message);
         }
         else {
-            puts ("interrupted");
+            log_info ("interrupted");
             break;
         }
     }
