@@ -133,9 +133,20 @@ pipeline {
     triggers {
         pollSCM 'H/2 * * * *'
     }
+    options {
+        skipDefaultCheckout()
+    }
 // Note: your Jenkins setup may benefit from similar setup on side of agents:
 //        PATH="/usr/lib64/ccache:/usr/lib/ccache:/usr/bin:/bin:${PATH}"
     stages {
+        stage ('checkout') {
+            // Do not do the default checkout, to better see log errors
+            // and/or account the time spent due to SCM connectivity.
+            // Having the step separate also allows to provide custom options.
+            steps {
+                checkout scm
+            }
+        }
         stage ('prepare') {
                     steps {
                         dir("tmp") {
