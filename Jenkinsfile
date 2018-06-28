@@ -53,6 +53,18 @@ pipeline {
             defaultValue: true,
             description: 'If the deployment is done, should THIS job wait for it to complete and include its success or failure as the build result (true), or should it schedule the job and exit quickly to free up the executor (false)',
             name: 'DEPLOY_REPORT_RESULT')
+        string (
+            defaultValue: '${DEFAULT_GIT_REFERENCE_REPO_URL}',
+            description: 'Git-compatible URL (e.g. filesystem path on Jenkins master or a local HTTP server) of reference repository to speed up requests; this can be one big repo for everything or many smaller repos (one replica for each project and its forks) where a literal {GIT_URL_BASENAME} can be used as part of DEFAULT_GIT_REFERENCE_REPO_URL value and would be replaced by last component of GIT_URL without the .git suffix',
+            name : 'GIT_REFERENCE_REPO_URL')
+        string (
+            defaultValue: '${DEFAULT_GIT_REFERENCE_REPO_JOB}',
+            description: 'Name of your job that handles updates of the reference Git repository (or several) and should accept this argument: DEPLOY_GIT_URL',
+            name : 'GIT_REFERENCE_REPO_JOB')
+        booleanParam (
+            defaultValue: true,
+            description: 'If the reference Git repository job is called, should THIS job wait for it to complete and include its success or failure as the build result (true), or should it schedule the job and exit quickly to free up the executor (false)',
+            name: 'GIT_REFERENCE_REPO_REPORT_RESULT')
         booleanParam (
             defaultValue: false,
             description: 'Attempt stable build without DRAFT API in this run?',
@@ -144,7 +156,33 @@ pipeline {
             // and/or account the time spent due to SCM connectivity.
             // Having the step separate also allows to provide custom options.
             steps {
-                checkout scm
+                script {
+                    // TODO: Validate that ${env.GIT_URL} is set and valid (not some other SCM is used in fact)
+                    // Evaluate arguments
+                    def myGIT_REFERENCE_REPO_URL = sh(returnStdout: true, script: """echo "${params["GIT_REFERENCE_REPO_URL"]}" """).trim();
+                    if ( myGIT_REFERENCE_REPO_URL == "" ) {
+                        // Default processing
+                        checkout scm
+                    } else {
+                        def myGIT_REFERENCE_REPO_JOB = sh(returnStdout: true, script: """echo "${params["GIT_REFERENCE_REPO_JOB"]}" """).trim();
+                        def myGIT_REFERENCE_REPO_REPORT_RESULT = sh(returnStdout: true, script: """echo "${params["GIT_REFERENCE_REPO_REPORT_RESULT"]}" """).trim().toBoolean();
+                        if ( myGIT_REFERENCE_REPO_JOB != "" ) {
+                            // Ask to update the reference repo
+                            build job: "${myGIT_REFERENCE_REPO_JOB}", parameters: [
+                                string(name: 'DEPLOY_GIT_URL', value: "${GIT_URL}")
+                                ], quietPeriod: 0, wait: myGIT_REFERENCE_REPO_REPORT_RESULT, propagate: myGIT_REFERENCE_REPO_REPORT_RESULT
+                        }
+
+                        // TODO: Parse myGIT_REFERENCE_REPO_URL for '{GIT_URL_BASENAME}'
+                        //       to replace it with basename of current ${env.GIT_URL}
+
+                        // Refer to specified GIT_REFERENCE_REPO_URL
+                        // HOPEFULLY if Jenkins job setup etc. decides on other
+                        // (additional) options, they will be honored here
+                        checkout([$class: 'GitSCM',
+                            extensions: [[$class: 'CloneOption', reference: "${myGIT_REFERENCE_REPO_URL}"]]
+                        ])
+                    }
             }
         }
         stage ('prepare') {
