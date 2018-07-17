@@ -33,7 +33,7 @@
 #include <czmq.h>
 #include <malamute.h>
 #include <ftyproto.h>
-#include <fty-common/log/fty_log.h>
+#include <fty-log/fty_logger.h>
 
 //  FTY_EXAMPLE version macros for compile-time API detection
 #define FTY_EXAMPLE_VERSION_MAJOR 1
