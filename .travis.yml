@@ -4,10 +4,7 @@
 ### Note: Customized after generation; take care upon regens
 
 language:
-- cpp
-### Note: while the project is in C, its log4cplus dependency
-### requires that the C++ environment with headers is available
-###- c
+- c
 
 cache:
 - ccache

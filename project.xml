@@ -48,7 +48,10 @@
         release = "master"
         test = "fty_common_logging_selftest" >
 
-        <use project = "log4cplus" header = "log4cplus/logger.h" test = "appender_test"
+        <!-- Note: pure C projects should use clogger.h, C++ use logger.h -->
+        <use project = "log4cplus"
+            header = "log4cplus/clogger.h"
+            test = "appender_test"
             repository = "https://github.com/42ity/log4cplus.git"
             release = "1.1.2-FTY-master"
             />
