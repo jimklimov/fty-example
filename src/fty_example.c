@@ -52,6 +52,10 @@ int main (int argc, char *argv [])
         else
         if (streq (argv [argn], "--config")
         ||  streq (argv [argn], "-c")) {
+			if ((argn + 1) >= argc) {
+				log_error ("Config option: missng file argument");
+				return 1;
+			}
             CONFIGFILE = argv [argn + 1];
             ++argn;
         }
