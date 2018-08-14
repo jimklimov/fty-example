@@ -233,6 +233,12 @@ fty_example_server_test (bool verbose)
     //assert ( (str_SELFTEST_DIR_RW != "") );
     // NOTE that for "char*" context you need (str_SELFTEST_DIR_RO + "/myfilename").c_str()
 
+    // Common pattern for plain C:
+    // char *test_state_file = zsys_sprintf ("%s/state_file", SELFTEST_DIR_RW);
+    // assert (test_state_file != NULL);
+    // zstr_sendx (fs, "STATE_FILE", test_state_file, NULL);
+    // zstr_free (&test_state_file);
+
     //  Set up broker, fty example server actor and third party actor
     zactor_t *server = zactor_new (mlm_server, "Malamute");
     zstr_sendx (server, "BIND", endpoint, NULL);
