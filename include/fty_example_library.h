@@ -32,7 +32,7 @@
 //  External dependencies
 #include <czmq.h>
 #include <malamute.h>
-#include <fty-log/fty_logger.h>
+#include <fty_log.h>
 #include <ftyproto.h>
 
 //  FTY_EXAMPLE version macros for compile-time API detection
@@ -44,6 +44,7 @@
     ((major) * 10000 + (minor) * 100 + (patch))
 #define FTY_EXAMPLE_VERSION \
     FTY_EXAMPLE_MAKE_VERSION(FTY_EXAMPLE_VERSION_MAJOR, FTY_EXAMPLE_VERSION_MINOR, FTY_EXAMPLE_VERSION_PATCH)
+
 
 #if defined (__WINDOWS__)
 #   if defined FTY_EXAMPLE_STATIC

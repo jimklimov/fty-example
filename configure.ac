@@ -541,15 +541,15 @@ AS_IF([test x"${search_log4cplus}" = xyes], [
         log4cplus_synthetic_libs="-llog4cplus"
 
         if test -n "${with_log4cplus}" && test x"${with_log4cplus}" != xyes && test x"${with_log4cplus}" != xno; then
-            if test -r "${with_log4cplus}/include/log4cplus/logger.h"; then
+            if test -r "${with_log4cplus}/include/log4cplus/clogger.h"; then
                 log4cplus_synthetic_cflags="-I${with_log4cplus}/include"
                 log4cplus_synthetic_libs="-L${with_log4cplus}/lib -llog4cplus"
             else
-            AC_MSG_ERROR([Header file ${with_log4cplus}/include/log4cplus/logger.h was not found. Please check log4cplus prefix])
+            AC_MSG_ERROR([Header file ${with_log4cplus}/include/log4cplus/clogger.h was not found. Please check log4cplus prefix])
             fi
         else
-            AC_CHECK_HEADER([log4cplus/logger.h], [],
-            AC_MSG_ERROR([Header file log4cplus/logger.h was not found in default search paths])
+            AC_CHECK_HEADER([log4cplus/clogger.h], [],
+            AC_MSG_ERROR([Header file log4cplus/clogger.h was not found in default search paths])
                 )
         fi
 
@@ -630,19 +630,19 @@ AS_IF([test x"${search_libfty_common_logging}" = xyes], [
         fty_common_logging_synthetic_libs="-lfty-common-logging"
 
         if test -n "${with_libfty_common_logging}" && test x"${with_libfty_common_logging}" != xyes && test x"${with_libfty_common_logging}" != xno; then
-            if test -r "${with_libfty_common_logging}/include/fty-log/fty_logger.h"; then
+            if test -r "${with_libfty_common_logging}/include/fty_log.h"; then
                 fty_common_logging_synthetic_cflags="-I${with_libfty_common_logging}/include"
                 fty_common_logging_synthetic_libs="-L${with_libfty_common_logging}/lib -lfty-common-logging"
             else
-            AC_MSG_ERROR([Header file ${with_libfty_common_logging}/include/fty-log/fty_logger.h was not found. Please check libfty_common_logging prefix])
+            AC_MSG_ERROR([Header file ${with_libfty_common_logging}/include/fty_log.h was not found. Please check libfty_common_logging prefix])
             fi
         else
-            AC_CHECK_HEADER([fty-log/fty_logger.h], [],
-            AC_MSG_ERROR([Header file fty-log/fty_logger.h was not found in default search paths])
+            AC_CHECK_HEADER([fty_log.h], [],
+            AC_MSG_ERROR([Header file fty_log.h was not found in default search paths])
                 )
         fi
 
-        AC_CHECK_LIB([fty-common-logging], [fty_log_selftest],
+        AC_CHECK_LIB([fty-common-logging], [fty_common_logging_selftest],
             [
                 was_fty_common_logging_check_lib_detected=yes
                 PKGCFG_LIBS_PRIVATE="$PKGCFG_LIBS_PRIVATE -lfty-common-logging"
