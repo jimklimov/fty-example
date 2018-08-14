@@ -6,7 +6,9 @@ set -ex
 [ -n "${REPO_DIR-}" ] || exit 1
 
 # Verify all required dependencies with repos can be checked out
-cd "$REPO_DIR/.."
+rm -rf "$REPO_DIR/../tmp-deps"
+mkdir -p "$REPO_DIR/../tmp-deps"
+cd "$REPO_DIR/../tmp-deps"
 git clone --quiet --depth 1 -b 1.0.5-FTY-master https://github.com/42ity/libsodium.git libsodium
 git clone --quiet --depth 1 -b 4.2.0-FTY-master https://github.com/42ity/libzmq.git libzmq
 git clone --quiet --depth 1 -b v3.0.2-FTY-master https://github.com/42ity/czmq.git czmq
@@ -18,7 +20,7 @@ cd -
 
 if ! ((command -v dpkg-query >/dev/null 2>&1 && dpkg-query --list zproject >/dev/null 2>&1) || \
        (command -v brew >/dev/null 2>&1 && brew ls --versions zproject >/dev/null 2>&1)); then
-    cd "$REPO_DIR/.."
+    cd "$REPO_DIR/../tmp-deps"
     git clone --quiet --depth 1 https://github.com/zeromq/zproject zproject
     cd zproject
     PATH="`pwd`:$PATH"
@@ -26,7 +28,7 @@ fi
 
 if ! ((command -v dpkg-query >/dev/null 2>&1 && dpkg-query --list generator-scripting-language >/dev/null 2>&1) || \
        (command -v brew >/dev/null 2>&1 && brew ls --versions gsl >/dev/null 2>&1)); then
-    cd "$REPO_DIR/.."
+    cd "$REPO_DIR/../tmp-deps"
     git clone https://github.com/zeromq/gsl.git gsl
     cd gsl/src
     make
