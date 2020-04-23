@@ -1,21 +1,21 @@
 /*  =========================================================================
     fty_example_server - Actor
 
-    Copyright (C) 2014 - 2020 Eaton                                        
-                                                                           
-    This program is free software; you can redistribute it and/or modify   
-    it under the terms of the GNU General Public License as published by   
-    the Free Software Foundation; either version 2 of the License, or      
-    (at your option) any later version.                                    
-                                                                           
-    This program is distributed in the hope that it will be useful,        
-    but WITHOUT ANY WARRANTY; without even the implied warranty of         
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          
-    GNU General Public License for more details.                           
-                                                                           
+    Copyright (C) 2014 - 2020 Eaton
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.            
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     =========================================================================
 */
 
@@ -51,7 +51,7 @@ s_handle_mailbox (mlm_client_t *client, zmsg_t **message_p)
             zmsg_destroy (&reply);
             log_error ("mlm_client_sendto (sender = '%s', subject = '%s', timeout = '1000') failed.",
                     mlm_client_sender (client), "example");
-        } 
+        }
     }else{
         zmsg_t *reply  = zmsg_new ();
         zmsg_addstr (reply, "ERROR");
@@ -89,7 +89,7 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
         return;
     }
     // Since we are subscribed to FTY_PROTO_STREAM_ASSETS,
-    // received message should be FTY_PROTO_ASSET message 
+    // received message should be FTY_PROTO_ASSET message
     if (fty_proto_id (protocol_message) != FTY_PROTO_ASSET) {
         log_error ("Received message is not expected FTY_PROTO_ASSET id, but: '%d'.",
                 fty_proto_id (protocol_message));
@@ -99,7 +99,7 @@ s_handle_stream (mlm_client_t *client, zmsg_t **message_p)
 
     uint64_t time = zclock_mono () / 1000;
     // We would like to demonstrate how to publish messages by sending an 'alert'
-    // to FTY_PROTO_STREAM_ALERTS each time asset message is received -> Therefore 
+    // to FTY_PROTO_STREAM_ALERTS each time asset message is received -> Therefore
     zlist_t *actions = zlist_new ();
     zlist_append (actions, "action");
     zmsg_t *reply_message = fty_proto_encode_alert (
@@ -145,7 +145,7 @@ fty_example_server (zsock_t *pipe, void* args)
         log_error ("mlm_client_connect (endpoint = '%s', timeout = '%d', address = '%s') failed.",
                 endpoint, 1000, "fty-example");
         return;
-    } 
+    }
 
     rv = mlm_client_set_consumer (client, FTY_PROTO_STREAM_ASSETS, ".*");
     if (rv == -1) {
@@ -160,7 +160,7 @@ fty_example_server (zsock_t *pipe, void* args)
         mlm_client_destroy (&client);
         log_error ("mlm_client_set_consumer (stream = '%s') failed.", FTY_PROTO_STREAM_ALERTS);
         return;
-    } 
+    }
 
     zpoller_t *poller = zpoller_new (pipe, mlm_client_msgpipe (client), NULL);
     zsock_signal (pipe, 0);
@@ -216,7 +216,7 @@ fty_example_server_test (bool verbose)
     ftylog_setInstance("fty-example","./src/selftest-ro/fty-example-log.conf");
 
     //  @selftest
-    static const char* endpoint = "inproc://fty-example-server-test";      
+    static const char* endpoint = "inproc://fty-example-server-test";
 
     // Note: If your selftest reads SCMed fixture data, please keep it in
     // src/selftest-ro; if your test creates filesystem objects, please
@@ -284,7 +284,7 @@ fty_example_server_test (bool verbose)
     message = zmsg_new ();
     rv = mlm_client_sendto (alerts_consumer, "fty-example", "example", NULL, 1000, &message);
     assert (rv == 0);
-    
+
     message = zmsg_new ();
     zmsg_addstr (message, "WRONG");
     rv = mlm_client_sendto (alerts_consumer, "fty-example", "example", NULL, 1000, &message);
